@@ -74,7 +74,7 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --role='roles/iam.serviceAccountTokenCreator'
 ```
 
-3. [Create a Cloud Run Service Account for Artifact Registry](https://cloud.google.com/artifact-registry/docs/access-control#grant-repo)
+3. [Create a Cloud Run Service Account for Artifact Registry and Storage Bucket](https://cloud.google.com/artifact-registry/docs/access-control#grant-repo)
 ```
 gcloud iam service-accounts create ${RUN_SERVICE_ACCOUNT} \
     --description="Cloud Run Service Account for Artifact Registry" \
@@ -84,6 +84,9 @@ gcloud artifacts repositories add-iam-policy-binding ${PYTHON_REPO_NAME} \
     --location ${REGION} \
     --member="serviceAccount:${RUN_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
     --role=${RUN_ROLE_NAME}
+    
+gsutil iam ch serviceAccount:${RUN_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com:legacyBucketReader gs://${BUCKET_NAME}
+gsutil iam ch serviceAccount:${RUN_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com:objectViewer gs://${BUCKET_NAME}
 ```
 
 4. [Create a EventArc Service Account for invoking Cloud Run](https://cloud.google.com/run/docs/securing/managing-access)
