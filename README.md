@@ -51,9 +51,10 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
 5. If you enabled the Pub/Sub service account on or before April 8, 2021, grant the iam.serviceAccountTokenCreator role to the Pub/Sub service account
 ```
 PROJECT_ID=$(gcloud config get-value project)
+PROJECT_NUMBER=$(gcloud projects list --filter="$(gcloud config get-value project)" --format="value(PROJECT_NUMBER)")
 
-gcloud projects add-iam-policy-binding PROJECT_ID \
-    --member="serviceAccount:service-PROJECT_NUMBER@gcp-sa-pubsub.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+    --member="serviceAccount:service-${PROJECT_NUMBER}@gcp-sa-pubsub.iam.gserviceaccount.com" \
     --role='roles/iam.serviceAccountTokenCreator'
 ```
 
@@ -66,13 +67,12 @@ CONTAINER_NAME=ar-migrate
 
 git clone https://github.com/zhenyangbai/ar-migrate.git
 gcloud builds submit --tag $REGION-docker.pkg.dev/${PROJECT_ID}/${CONTAINER_REPO_NAME}/${CONTAINER_NAME}:v1
-
 ```
 
 7.Deploy the container image to Cloud Run
 ```
 SERVICE_NAME=ar-migrate
-SERVICE_ACCOUNT=
+RUN_SERVICE_ACCOUNT={CREATE A CUSTOM CLOUD RUN SERVICE ACCOUNT}
 PROJECT_ID=$(gcloud config get-value project)
 REGION=asia-southeast1
      
@@ -91,19 +91,16 @@ gcloud run deploy package-upload \
 
 8. Create an Eventarc trigger[https://cloud.google.com/eventarc/docs/run/quickstart-storage#trigger-setup]
 ```
-SERVICE_NAME=ar-migrate
+TRIGGER_SERVICE_NAME=ar-migrate
 PROJECT_NUMBER=$(gcloud projects list --filter="$(gcloud config get-value project)" --format="value(PROJECT_NUMBER)")
 BUCKET_NAME=python-repo-bucket
 REGION=asia-southeast1
+TRIGGER_SERVICE_ACCOUNT={CREATE A CUSTOM EVENTARC TRIGGER SERVICE ACCOUNT}
 
- gcloud eventarc triggers create storage-events-trigger \
+gcloud eventarc triggers create storage-events-trigger \
      --destination-run-service=${SERVICE_NAME} \
      --destination-run-region=${REGION} \
      --event-filters="type=google.cloud.storage.object.v1.finalized" \
      --event-filters="bucket=${BUCKET_NAME}" \
-     --service-account=PROJECT_NUMBER-compute@developer.gserviceaccount.com
+     --service-account=${TRIGGER_SERVICE_ACCCOUNT}
 ```
-
-## Deploying
-
-## 
