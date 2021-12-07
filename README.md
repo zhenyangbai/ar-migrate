@@ -115,7 +115,7 @@ gcloud run deploy ar-migrate \
     --project=${PROJECT_ID}
 ```
 
-3. Enable EventArc ventArc Service Account to Invoke Cloud run
+3. Enable EventArc Service Account to Invoke Cloud run
 ```
 gcloud run services add-iam-policy-binding ${SERVICE_NAME} \
     --member="serviceAccount:${TRIGGER_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
