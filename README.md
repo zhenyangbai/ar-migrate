@@ -69,7 +69,7 @@ git clone https://github.com/zhenyangbai/ar-migrate.git
 gcloud builds submit --tag $REGION-docker.pkg.dev/${PROJECT_ID}/${CONTAINER_REPO_NAME}/${CONTAINER_NAME}:v1
 ```
 
-7.Deploy the container image to Cloud Run
+7. Deploy the container image to Cloud Run
 ```
 SERVICE_NAME=ar-migrate
 RUN_SERVICE_ACCOUNT={CREATE A CUSTOM CLOUD RUN SERVICE ACCOUNT}
