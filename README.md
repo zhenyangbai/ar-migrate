@@ -2,7 +2,7 @@
 Cloud Run Job to Sync Python Packages from GCS Bucket to Artifact Registry using Eventarc
 
 ## Architecture 
-![alt text](https://raw.githubusercontent.com/zhenyangbai/ar-migrate/main/blob/Artifact%20Registry.png)
+![alt text](https://raw.githubusercontent.com/zhenyangbai/ar-migrate/main/blob/GCS%20-_%20Artifact%20Registry.png)
 
 
 ## Enabling Google APIs
