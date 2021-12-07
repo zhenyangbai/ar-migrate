@@ -125,6 +125,7 @@ gcloud run services add-iam-policy-binding ${SERVICE_NAME} \
 3. [Create an Eventarc trigger](https://cloud.google.com/eventarc/docs/run/quickstart-storage#trigger-setup)
 ```
 gcloud eventarc triggers create storage-events-trigger \
+     --location=${REGION} \
      --destination-run-service=${SERVICE_NAME} \
      --destination-run-region=${REGION} \
      --event-filters="type=google.cloud.storage.object.v1.finalized" \
