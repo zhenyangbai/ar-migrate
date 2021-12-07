@@ -97,7 +97,7 @@ REGION=asia-southeast1
 CONTAINER_REPO_NAME=docker-registry
 CONTAINER_NAME=ar-migrate
 
-gcloud run deploy package-upload \
+gcloud run deploy ${SERVICE_NAME} \
 --image=${REGION}-docker.pkg.dev/${PROJECT_ID}/${CONTAINER_REPO_NAME}/${CONTAINER_NAME}:v1 \
 --no-allow-unauthenticated \
 --service-account=${RUN_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com \
