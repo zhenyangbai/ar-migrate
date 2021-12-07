@@ -11,7 +11,8 @@ gcloud services enable \
   artifactregistry.googleapis.com \
   storage.googleapis.com \
   pubsub.googleapis.com \
-  run.googleapis.com
+  run.googleapis.com \
+  cloudbuild.googleapis.com
 ```
 
 ## Setup Up Env Variables
@@ -95,6 +96,7 @@ gcloud iam service-accounts create ${TRIGGER_SERVICE_ACCOUNT} \
 1. Build the container and upload it to Cloud Build
 ```
 git clone https://github.com/zhenyangbai/ar-migrate.git
+cd ar-migrate
 gcloud builds submit --tag $REGION-docker.pkg.dev/${PROJECT_ID}/${CONTAINER_REPO_NAME}/${CONTAINER_NAME}:v1
 ```
 
