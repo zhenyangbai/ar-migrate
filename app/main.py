@@ -14,7 +14,7 @@ app = Flask(__name__)
 PROJECT = os.environ.get('PROJECT')
 BUCKET = os.environ.get('BUCKET')
 REGION = os.environ.get('REGION', 'asia-southeast1')
-REGISTRY_NAME = os.environ.get('REGISTRY_NAME', 'ar-migrate')
+REGISTRY_NAME = os.environ.get('REGISTRY_NAME', 'python-repo')
 REGISTRY_API = (
                   f'https://artifactregistry.googleapis.com/v1beta2/projects/'
                   f'{PROJECT}/locations/{REGION}/repositories/{REGISTRY_NAME}/files'
