@@ -4,6 +4,16 @@ Cloud Run Job to Sync Python Packages from GCS Bucket to Artifact Registry using
 ## Architecture 
 ![alt text](https://raw.githubusercontent.com/zhenyangbai/ar-migrate/main/blob/Artifact%20Registry.png)
 
+
+## Enabling Google APIs
+```
+gcloud services enable \
+  artifactregistry.googleapis.com \
+  storage.googleapis.com \
+  pubsub.googleapis.com \
+  run.googleapis.com
+```
+
 ## Setup Up Env Variables
 ```
 export REGION=asia-southeast1
@@ -26,7 +36,7 @@ export TRIGGER_ROLE_NAME="roles/run.invoker"
 1. [Create a Python Repository](https://cloud.google.com/artifact-registry/docs/python/quickstart#create)
 
 ```
-gcloud artifacts repositories create ${PYTHON_REPO_NAME}
+gcloud artifacts repositories create ${PYTHON_REPO_NAME} \
     --repository-format=python \
     --location=${REGION} \
     --description="Python package repository"
@@ -35,8 +45,9 @@ gcloud artifacts repositories create ${PYTHON_REPO_NAME}
 2. [Create a Docker Repository](https://cloud.google.com/artifact-registry/docs/docker/quickstart#create)
 
 ```
-gcloud artifacts repositories create ${CONTAINER_REPO_NAME}
-    --repository-format=python \
+
+gcloud artifacts repositories create ${CONTAINER_REPO_NAME} \
+    --repository-format=docker \
     --location=${REGION} \
     --description="Docker repository"
 ```
