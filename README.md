@@ -106,15 +106,15 @@ gcloud builds submit --tag $REGION-docker.pkg.dev/${PROJECT_ID}/${CONTAINER_REPO
 gcloud run deploy ar-migrate \
     --image=${REGION}-docker.pkg.dev/${PROJECT_ID}/${CONTAINER_REPO_NAME}/${CONTAINER_NAME}:v1 \
     --no-allow-unauthenticated \
-    --service-account=run-artifact@zyrun-334412.iam.gserviceaccount.com \
+    --service-account=${RUN_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com \
     --set-env-vars=PROJECT=${PROJECT_ID},BUCKET=${BUCKET_NAME},REGION=${REGION},REGISTRY_NAME=${PYTHON_REPO_NAME} \
     --no-use-http2 \
     --binary-authorization default \
     --cpu-throttling \
     --execution-environment=gen1 \
     --platform=managed \
-    --region=asia-southeast1 \
-    --project=zyrun-334412
+    --region=${REGION} \
+    --project=${PROJECT_ID}
 ```
 
 3. Enable EventArc ventArc Service Account to Invoke Cloud run
