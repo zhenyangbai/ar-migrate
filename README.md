@@ -89,10 +89,6 @@ gcloud artifacts repositories add-iam-policy-binding ${PYTHON_REPO_NAME} \
 gcloud iam service-accounts create ${TRIGGER_SERVICE_ACCOUNT} \
     --description="EventArc Service Account for Triggering Cloud Run" \
     --display-name="EventArc Service Account for Triggering Cloud Run"
-    
-gcloud run services add-iam-policy-binding ${SERVICE_NAME} \
-    --member="serviceAccount:${TRIGGER_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
-    --role=${TRIGGER_ROLE_NAME}
 ```
 
 ## Deploying
@@ -115,6 +111,13 @@ gcloud run deploy ${SERVICE_NAME} \
     --platform=managed \
     --region=${REGION} \
     --project=${PROJECT_ID}
+```
+
+3. Enable EventArc ventArc Service Account to Invoke Cloud run
+```
+gcloud run services add-iam-policy-binding ${SERVICE_NAME} \
+    --member="serviceAccount:${TRIGGER_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
+    --role=${TRIGGER_ROLE_NAME}
 ```
 
 3. [Create an Eventarc trigger](https://cloud.google.com/eventarc/docs/run/quickstart-storage#trigger-setup)
