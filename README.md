@@ -90,15 +90,17 @@ gcloud artifacts repositories add-iam-policy-binding ${PYTHON_REPO_NAME} \
 
 8. Deploy the container image to Cloud Run
 ```
+RUN_SERVICE_ACCOUNT=run-artifact
 SERVICE_NAME=ar-migrate
-RUN_SERVICE_ACCOUNT={CREATE A CUSTOM CLOUD RUN SERVICE ACCOUNT}
 PROJECT_ID=$(gcloud config get-value project)
 REGION=asia-southeast1
-     
+CONTAINER_REPO_NAME=docker-registry
+CONTAINER_NAME=ar-migrate
+
 gcloud run deploy package-upload \
 --image=${REGION}-docker.pkg.dev/${PROJECT_ID}/${CONTAINER_REPO_NAME}/${CONTAINER_NAME}:v1 \
 --no-allow-unauthenticated \
---service-account=${SERVICE_ACCOUNT} \
+--service-account=${RUN_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com \
 --memory=512Mi \
 --no-use-http2 \
 --cpu-throttling \
@@ -127,15 +129,15 @@ gcloud run services add-iam-policy-binding ${SERVICE_NAME} \
 10. [Create an Eventarc trigger](https://cloud.google.com/eventarc/docs/run/quickstart-storage#trigger-setup)
 ```
 TRIGGER_SERVICE_NAME=ar-migrate
-PROJECT_NUMBER=$(gcloud projects list --filter="$(gcloud config get-value project)" --format="value(PROJECT_NUMBER)")
 BUCKET_NAME=python-repo-bucket
 REGION=asia-southeast1
-TRIGGER_SERVICE_ACCOUNT={CREATE A CUSTOM EVENTARC TRIGGER SERVICE ACCOUNT}
+TRIGGER_SERVICE_ACCOUNT=trigger-run
+PROJECT_ID=$(gcloud config get-value project)
 
 gcloud eventarc triggers create storage-events-trigger \
      --destination-run-service=${SERVICE_NAME} \
      --destination-run-region=${REGION} \
      --event-filters="type=google.cloud.storage.object.v1.finalized" \
      --event-filters="bucket=${BUCKET_NAME}" \
-     --service-account=${TRIGGER_SERVICE_ACCCOUNT}
+     --service-account="${TRIGGER_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com"
 ```
