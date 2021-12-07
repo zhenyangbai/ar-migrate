@@ -69,7 +69,26 @@ git clone https://github.com/zhenyangbai/ar-migrate.git
 gcloud builds submit --tag $REGION-docker.pkg.dev/${PROJECT_ID}/${CONTAINER_REPO_NAME}/${CONTAINER_NAME}:v1
 ```
 
-7. Deploy the container image to Cloud Run
+7. [Create a Cloud Run Service Account for artifact registry](https://cloud.google.com/artifact-registry/docs/access-control#grant-repo)
+```
+RUN_SERVICE_ACCOUNT=run-artifact
+RUN_ROLE_NAME="roles/artifactregistry.writer"
+PYTHON_REPO_NAME=python-repo
+REGION=asia-southeast1
+PROJECT_ID=$(gcloud config get-value project)
+
+gcloud iam service-accounts create ${RUN_SERVICE_ACCOUNT} \
+    --description="Cloud Run Service Account for Artifact Registry" \
+    --display-name="Cloud Run Service Account for Artifact Registry"
+
+gcloud artifacts repositories add-iam-policy-binding ${PYTHON_REPO_NAME} \
+    --location ${REGION} \
+    --member="serviceAccount:${RUN_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
+    --role=${RUN_ROLE_NAME}
+```
+
+
+8. Deploy the container image to Cloud Run
 ```
 SERVICE_NAME=ar-migrate
 RUN_SERVICE_ACCOUNT={CREATE A CUSTOM CLOUD RUN SERVICE ACCOUNT}
@@ -89,7 +108,23 @@ gcloud run deploy package-upload \
 --project=${PROJECT_ID}
 ```
 
-8. Create an Eventarc trigger[https://cloud.google.com/eventarc/docs/run/quickstart-storage#trigger-setup]
+7. [Create a EventArc Service Account for invoking Cloud Run](https://cloud.google.com/run/docs/securing/managing-access)
+```
+SERVICE_NAME=ar-migrate
+TRIGGER_SERVICE_ACCOUNT=trigger-run
+TRIGGER_ROLE_NAME="roles/run.invoker"
+PROJECT_ID=$(gcloud config get-value project)
+
+gcloud iam service-accounts create ${TRIGGER_SERVICE_ACCOUNT} \
+    --description="EventArc Service Account for Triggering Cloud Run" \
+    --display-name="EventArc Service Account for Triggering Cloud Run"
+    
+gcloud run services add-iam-policy-binding ${SERVICE_NAME} \
+    --member="serviceAccount:${TRIGGER_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
+    --role=${TRIGGER_ROLE_NAME}
+```
+
+10. [Create an Eventarc trigger](https://cloud.google.com/eventarc/docs/run/quickstart-storage#trigger-setup)
 ```
 TRIGGER_SERVICE_NAME=ar-migrate
 PROJECT_NUMBER=$(gcloud projects list --filter="$(gcloud config get-value project)" --format="value(PROJECT_NUMBER)")
