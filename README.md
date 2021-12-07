@@ -12,7 +12,8 @@ gcloud services enable \
   storage.googleapis.com \
   pubsub.googleapis.com \
   run.googleapis.com \
-  cloudbuild.googleapis.com
+  cloudbuild.googleapis.com \
+  eventarc.googleapis.com
 ```
 
 ## Setup Up Env Variables
@@ -102,17 +103,18 @@ gcloud builds submit --tag $REGION-docker.pkg.dev/${PROJECT_ID}/${CONTAINER_REPO
 
 2. Deploy the container image to Cloud Run
 ```
-gcloud run deploy ${SERVICE_NAME} \
+gcloud run deploy ar-migrate \
     --image=${REGION}-docker.pkg.dev/${PROJECT_ID}/${CONTAINER_REPO_NAME}/${CONTAINER_NAME}:v1 \
     --no-allow-unauthenticated \
-    --service-account=${RUN_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com \
-    --memory=512Mi \
+    --service-account=run-artifact@zyrun-334412.iam.gserviceaccount.com \
+    --set-env-vars=PROJECT=${PROJECT_ID},BUCKET=${BUCKET_NAME},REGION=${REGION},REGISTRY_NAME=${PYTHON_REPO_NAME} \
     --no-use-http2 \
+    --binary-authorization default \
     --cpu-throttling \
     --execution-environment=gen1 \
     --platform=managed \
-    --region=${REGION} \
-    --project=${PROJECT_ID}
+    --region=asia-southeast1 \
+    --project=zyrun-334412
 ```
 
 3. Enable EventArc ventArc Service Account to Invoke Cloud run
