@@ -13,7 +13,8 @@ gcloud services enable \
   pubsub.googleapis.com \
   run.googleapis.com \
   cloudbuild.googleapis.com \
-  eventarc.googleapis.com
+  eventarc.googleapis.com \
+  logging.googleapis.com
 ```
 
 ## Setup Up Env Variables
