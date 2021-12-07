@@ -110,8 +110,6 @@ gcloud run deploy ar-migrate \
     --set-env-vars=PROJECT=${PROJECT_ID},BUCKET=${BUCKET_NAME},REGION=${REGION},REGISTRY_NAME=${PYTHON_REPO_NAME} \
     --no-use-http2 \
     --binary-authorization default \
-    --cpu-throttling \
-    --execution-environment=gen1 \
     --platform=managed \
     --region=${REGION} \
     --project=${PROJECT_ID}
