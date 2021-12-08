@@ -1,5 +1,5 @@
 # ar-migrate
-Cloud Run Job to Sync Python Packages from GCS Bucket to Artifact Registry using Eventarc
+ar-migrate is a Cloud Run Job to Sync Python Packages from a GCS Bucket to Artifact Registry using Eventarc Storage Events Trigger.
 
 ## Architecture 
 ![alt text](https://raw.githubusercontent.com/zhenyangbai/ar-migrate/main/blob/GCS%20-_%20Artifact%20Registry.png)
