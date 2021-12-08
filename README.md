@@ -14,7 +14,8 @@ gcloud services enable \
   run.googleapis.com \
   cloudbuild.googleapis.com \
   eventarc.googleapis.com \
-  logging.googleapis.com
+  logging.googleapis.com \
+  cloudresourcemanager.googleapis.com
 ```
 
 ## Setup Up Env Variables
