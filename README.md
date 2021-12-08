@@ -138,4 +138,4 @@ gcloud eventarc triggers create storage-events-trigger \
      --service-account="${TRIGGER_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com"
 ```
 
-## [Testing Artifact Registry](https://github.com/zhenyangbai/ar-migrate/blob/main/ar-migrate.ipynb)
+## [Testing Artifact Registry with Vertex Workbench](https://github.com/zhenyangbai/ar-migrate/blob/main/ar-migrate.ipynb)
