@@ -1,6 +1,10 @@
 # ar-migrate
 ar-migrate is a Cloud Run Job to Sync Python Packages from a GCS Bucket to Artifact Registry using Eventarc Storage Events Trigger.
 
+This provides a mechanism to use a GCS bucket to proxy the contents of existing PyPI servers to Artifact Registry quickly.
+
+You can also use the GCS bucket to update the contents of multiple Artifact Registry Repos across different regions concurrently.
+
 ## Architecture 
 ![alt text](https://raw.githubusercontent.com/zhenyangbai/ar-migrate/main/blob/GCS%20-_%20Artifact%20Registry.png)
 
@@ -15,7 +19,9 @@ gcloud services enable \
   cloudbuild.googleapis.com \
   eventarc.googleapis.com \
   logging.googleapis.com \
-  cloudresourcemanager.googleapis.com
+  cloudresourcemanager.googleapis.com \
+  binaryauthorization.googleapis.com \
+  iam.googleapis.com
 ```
 
 ## Setup Up Env Variables
@@ -124,6 +130,7 @@ gcloud run deploy ar-migrate \
 ```
 gcloud run services add-iam-policy-binding ${SERVICE_NAME} \
     --member="serviceAccount:${TRIGGER_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
+    --region=${REGION} \
     --role=${TRIGGER_ROLE_NAME}
 ```
 
